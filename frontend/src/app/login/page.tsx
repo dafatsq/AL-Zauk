@@ -202,13 +202,6 @@ function LoginPageContent() {
                   )}
                 </Button>
               </form>
-
-              <div className="mt-6 text-center text-sm text-muted-foreground">
-                <p>Demo Credentials:</p>
-                <p className="mt-1 font-mono text-xs">
-                  owner@AL-Zauk.local / owner123
-                </p>
-              </div>
             </TabsContent>
           </Tabs>
         </CardContent>
