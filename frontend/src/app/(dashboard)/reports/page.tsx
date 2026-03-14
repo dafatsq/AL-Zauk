@@ -43,6 +43,7 @@ import {
   EmployeeSales,
   CategorySales,
   SalesRangeReport,
+  ExpenseSummary,
 } from '@/types';
 import { useAuth, PERMISSIONS } from '@/contexts/auth-context';
 
@@ -118,6 +119,7 @@ export default function ReportsPage() {
   const [cashReport, setCashReport] = useState<CashReport | null>(null);
   const [employeeSales, setEmployeeSales] = useState<EmployeeSales[]>([]);
   const [categorySales, setCategorySales] = useState<CategorySales[]>([]);
+  const [expenseSummary, setExpenseSummary] = useState<ExpenseSummary | null>(null);
 
   const formatCurrency = (amount: number | string) => {
     const num = typeof amount === 'string' ? parseFloat(amount) : amount;
@@ -143,16 +145,18 @@ export default function ReportsPage() {
   const fetchOverviewData = useCallback(async () => {
     setIsLoading(true);
     try {
-      const [salesRes, topRes] = await Promise.all([
+      const [salesRes, topRes, expenseRes] = await Promise.all([
         api.getSalesRangeReport({
           start_date: dateRange.start,
           end_date: dateRange.end,
         }),
         api.getTopSellers({ from: dateRange.start, to: dateRange.end, limit: 5 }),
+        api.getExpenseSummary({ start_date: dateRange.start, end_date: dateRange.end }),
       ]);
 
       if (salesRes.data) setSalesRangeReport(salesRes.data);
       if (topRes.data) setTopSellers(topRes.data);
+      if (expenseRes.data) setExpenseSummary(expenseRes.data);
     } catch (error) {
       console.error('Failed to fetch overview data:', error);
     } finally {
@@ -393,28 +397,41 @@ export default function ReportsPage() {
           <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium">Total Sales</CardTitle>
+                <CardTitle className="text-sm font-medium">Net Revenue</CardTitle>
                 <DollarSign className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{formatCurrency(salesRangeReport.summary.total_amount)}</div>
+                <div className="text-2xl font-bold">{formatCurrency(parseFloat(salesRangeReport.summary.total_amount) - parseFloat(salesRangeReport.summary.total_tax))}</div>
                 <p className="text-xs text-muted-foreground mt-1">
-                  {salesRangeReport.summary.total_transactions} transactions
+                  Sales after discount
                 </p>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium">Items Sold</CardTitle>
-                <Package className="h-4 w-4 text-muted-foreground" />
+                <CardTitle className="text-sm font-medium">Total Expenses</CardTitle>
+                <TrendingDown className="h-4 w-4 text-red-500" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{formatNumber(salesRangeReport.summary.total_items)}</div>
+                <div className="text-2xl font-bold text-red-600">{expenseSummary ? formatCurrency(expenseSummary.total_amount) : formatCurrency(0)}</div>
                 <p className="text-xs text-muted-foreground mt-1">
-                  Avg {salesRangeReport.summary.total_transactions > 0
-                    ? (salesRangeReport.summary.total_items / salesRangeReport.summary.total_transactions).toFixed(1)
-                    : 0} per sale
+                  {expenseSummary ? expenseSummary.expense_count : 0} records
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className={parseFloat(salesRangeReport.summary.total_amount) - (expenseSummary ? parseFloat(expenseSummary.total_amount) : 0) - parseFloat(salesRangeReport.summary.total_tax) >= 0 ? "border-2 border-green-500" : "border-2 border-red-500"}>
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium">Net Profit</CardTitle>
+                {parseFloat(salesRangeReport.summary.total_amount) - (expenseSummary ? parseFloat(expenseSummary.total_amount) : 0) - parseFloat(salesRangeReport.summary.total_tax) >= 0 ? <ArrowUpRight className="h-5 w-5 text-green-500" /> : <ArrowDownRight className="h-5 w-5 text-red-500" />}
+              </CardHeader>
+              <CardContent>
+                <div className={`text-2xl font-bold ${parseFloat(salesRangeReport.summary.total_amount) - (expenseSummary ? parseFloat(expenseSummary.total_amount) : 0) - parseFloat(salesRangeReport.summary.total_tax) >= 0 ? "text-green-600" : "text-red-600"}`}>
+                  {formatCurrency((parseFloat(salesRangeReport.summary.total_amount) - parseFloat(salesRangeReport.summary.total_tax)) - (expenseSummary ? parseFloat(expenseSummary.total_amount) : 0))}
+                </div>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Revenue - Expenses
                 </p>
               </CardContent>
             </Card>
@@ -426,18 +443,9 @@ export default function ReportsPage() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{formatCurrency(salesRangeReport.summary.total_tax)}</div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium">Discounts</CardTitle>
-                <TrendingDown className="h-4 w-4 text-orange-500" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-orange-600">
-                  {formatCurrency(salesRangeReport.summary.total_discount)}
-                </div>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Not included in profit
+                </p>
               </CardContent>
             </Card>
           </div>
