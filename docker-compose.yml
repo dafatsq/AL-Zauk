@@ -9,7 +9,7 @@ services:
       POSTGRES_PASSWORD: AL-Zauk_dev
       POSTGRES_DB: AL-Zauk_dev
     ports:
-      - "5432:5432"
+      - "5434:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -30,7 +30,7 @@ services:
       PORT: "8080"
       ENVIRONMENT: development
     ports:
-      - "8080:8080"
+      - "8082:8080"
     depends_on:
       db:
         condition: service_healthy
