@@ -288,10 +288,78 @@ export default function ReportsPage() {
   // Export handlers
   const handleExportComprehensive = async () => {
     try {
-      const url = await api.exportComprehensiveReportCSV({
-        start_date: dateRange.start,
-        end_date: dateRange.end,
-      });
+      if (!salesRangeReport) {
+        console.error('No report data available to export');
+        return;
+      }
+
+      const totalAmount = parseFloat(salesRangeReport.summary.total_amount) || 0;
+      const totalTax = parseFloat(salesRangeReport.summary.total_tax) || 0;
+      const totalExpenses = expenseSummary ? parseFloat(expenseSummary.total_amount) || 0 : 0;
+      const netRevenue = totalAmount - totalTax;
+      const netProfit = netRevenue - totalExpenses;
+
+      const escapeCsv = (value: string | number) => {
+        const str = String(value ?? '');
+        if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+          return `"${str.replace(/"/g, '""')}"`;
+        }
+        return str;
+      };
+
+      const rows: string[] = [];
+
+      rows.push('Section,Metric,Value');
+      rows.push([
+        'Overview',
+        'Period',
+        `${dateRange.start} to ${dateRange.end}`,
+      ].map(escapeCsv).join(','));
+      rows.push(['Overview', 'Total Revenue', totalAmount.toFixed(2)].map(escapeCsv).join(','));
+      rows.push(['Overview', 'Tax Collected', totalTax.toFixed(2)].map(escapeCsv).join(','));
+      rows.push(['Overview', 'Net Revenue', netRevenue.toFixed(2)].map(escapeCsv).join(','));
+      rows.push(['Overview', 'Total Expenses', totalExpenses.toFixed(2)].map(escapeCsv).join(','));
+      rows.push(['Overview', 'Net Profit', netProfit.toFixed(2)].map(escapeCsv).join(','));
+      rows.push(['Overview', 'Total Transactions', salesRangeReport.summary.total_transactions].map(escapeCsv).join(','));
+      rows.push(['Overview', 'Total Items', salesRangeReport.summary.total_items].map(escapeCsv).join(','));
+
+      if (salesRangeReport.daily_reports && salesRangeReport.daily_reports.length > 0) {
+        rows.push('');
+        rows.push('Daily Reports,Date,Revenue,Tax,Transactions,Items');
+        salesRangeReport.daily_reports.forEach((day) => {
+          rows.push([
+            'Daily Reports',
+            day.date,
+            parseFloat(day.total_amount || '0').toFixed(2),
+            parseFloat(day.total_tax || '0').toFixed(2),
+            day.transaction_count,
+            day.item_count,
+          ].map(escapeCsv).join(','));
+        });
+      }
+
+      if (topSellers.length > 0) {
+        rows.push('');
+        rows.push('Top Sellers,Product,Quantity Sold,Revenue,Profit Margin %,Profit');
+        topSellers.forEach((item) => {
+          const totalRevenue = parseFloat(item.total_revenue || '0') || 0;
+          const totalProfit = parseFloat(item.total_profit || '0') || 0;
+          const profitMargin = totalRevenue > 0 ? ((totalProfit / totalRevenue) * 100).toFixed(2) : '0.00';
+
+          rows.push([
+            'Top Sellers',
+            item.product_name,
+            item.quantity_sold,
+            totalRevenue.toFixed(2),
+            profitMargin,
+            totalProfit.toFixed(2),
+          ].map(escapeCsv).join(','));
+        });
+      }
+
+      const csvContent = rows.join('\n');
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
       a.download = `comprehensive_report_${dateRange.start}_to_${dateRange.end}.csv`;

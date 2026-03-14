@@ -36,7 +36,6 @@ import {
 import api from '@/lib/api';
 import { Product, LowStockItem, AdjustmentType } from '@/types';
 import { useAuth, PERMISSIONS } from '@/contexts/auth-context';
-import { getBackendBaseUrl } from '@/lib/runtime-config';
 
 // Map UI selections to backend adjustment types
 const ADJUSTMENT_TYPES = {
@@ -80,8 +79,9 @@ function getImageUrl(path: string | null | undefined): string {
     return path;
   }
   // Derive the backend base URL from the API URL env var
-  // e.g. "http://localhost:8082/api/v1" -> "http://localhost:8082"
-    const baseUrl = getBackendBaseUrl();
+  // e.g. "http://localhost:8080/api/v1" -> "http://localhost:8080"
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api/v1';
+  const baseUrl = apiUrl.replace(/\/api\/v1\/?$/, '');
   return `${baseUrl}${path}`;
 }
 
