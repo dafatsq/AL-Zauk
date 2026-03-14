@@ -338,18 +338,14 @@ export default function ReportsPage() {
 
       if (topSellers.length > 0) {
         rows.push('');
-        rows.push('Product,Quantity Sold,Revenue,Profit Margin %,Profit');
+        rows.push('Product,Quantity Sold,Revenue');
         topSellers.forEach((item) => {
           const totalRevenue = parseFloat(item.total_revenue || '0') || 0;
-          const totalProfit = parseFloat(item.total_profit || '0') || 0;
-          const profitMargin = totalRevenue > 0 ? ((totalProfit / totalRevenue) * 100).toFixed(2) : '0.00';
 
           rows.push([
             item.product_name,
             item.quantity_sold,
             totalRevenue.toFixed(2),
-            profitMargin,
-            totalProfit.toFixed(2),
           ].map(escapeCsv).join(','));
         });
       }
@@ -509,7 +505,7 @@ export default function ReportsPage() {
               <CardContent>
                 <div className="text-2xl font-bold">{formatCurrency(salesRangeReport.summary.total_tax)}</div>
                 <p className="text-xs text-muted-foreground mt-1">
-                  Not included in profit
+                  Not included in net revenue
                 </p>
               </CardContent>
             </Card>
@@ -839,15 +835,10 @@ export default function ReportsPage() {
                       <th className="pb-3 font-medium">Category</th>
                       <th className="pb-3 font-medium text-right">Qty Sold</th>
                       <th className="pb-3 font-medium text-right">Revenue</th>
-                      <th className="pb-3 font-medium text-right">Profit</th>
-                      <th className="pb-3 font-medium text-right">Margin</th>
                     </tr>
                   </thead>
                   <tbody>
                     {topSellers.map((item, index) => {
-                      const margin = parseFloat(item.total_revenue) > 0
-                        ? (parseFloat(item.total_profit) / parseFloat(item.total_revenue)) * 100
-                        : 0;
                       return (
                         <tr key={`${item.product_id}-${index}`} className="border-b last:border-0 hover:bg-muted/50">
                           <td className="py-3">
@@ -867,17 +858,6 @@ export default function ReportsPage() {
                           <td className="py-3 text-muted-foreground">{item.category_name || '-'}</td>
                           <td className="py-3 text-right font-medium">{formatNumber(item.quantity_sold)}</td>
                           <td className="py-3 text-right font-bold">{formatCurrency(item.total_revenue)}</td>
-                          <td className="py-3 text-right text-green-600">{formatCurrency(item.total_profit)}</td>
-                          <td className="py-3 text-right">
-                            <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${margin > 30
-                              ? 'bg-primary text-primary-foreground ring-primary/20'
-                              : margin > 15
-                                ? 'bg-muted text-muted-foreground ring-muted-foreground/20'
-                                : 'bg-transparent text-muted-foreground ring-muted-foreground/30'
-                              }`}>
-                              {margin.toFixed(1)}%
-                            </span>
-                          </td>
                         </tr>
                       );
                     })}
@@ -891,10 +871,6 @@ export default function ReportsPage() {
           <div className="lg:hidden space-y-4">
             <h3 className="font-semibold text-lg">Top Selling Products</h3>
             {topSellers.map((item, index) => {
-              const margin = parseFloat(item.total_revenue) > 0
-                ? (parseFloat(item.total_profit) / parseFloat(item.total_revenue)) * 100
-                : 0;
-
               return (
                 <Card key={`${item.product_id}-mobile-${index}`}>
                   <CardContent className="p-4 space-y-3">
@@ -921,21 +897,6 @@ export default function ReportsPage() {
                       <div className="text-right">
                         <span className="text-xs text-muted-foreground block">Qty Sold</span>
                         <span className="font-medium">{formatNumber(item.quantity_sold)}</span>
-                      </div>
-                      <div>
-                        <span className="text-xs text-muted-foreground block">Profit</span>
-                        <span className="font-medium text-green-600">{formatCurrency(item.total_profit)}</span>
-                      </div>
-                      <div className="text-right">
-                        <span className="text-xs text-muted-foreground block">Margin</span>
-                        <span className={`inline-flex items-center rounded-md px-2 py-0.5 text-xs font-medium ring-1 ring-inset ${margin > 30
-                          ? 'bg-primary/10 text-primary ring-primary/20'
-                          : margin > 15
-                            ? 'bg-muted text-muted-foreground ring-muted-foreground/20'
-                            : 'bg-transparent text-muted-foreground ring-muted-foreground/30'
-                          }`}>
-                          {margin.toFixed(1)}%
-                        </span>
                       </div>
                     </div>
                   </CardContent>
@@ -1002,14 +963,6 @@ export default function ReportsPage() {
             </Card>
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium">Cost Value</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{formatCurrency(inventoryReport.total_cost_value)}</div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="pb-2">
                 <CardTitle className="text-sm font-medium">Retail Value</CardTitle>
               </CardHeader>
               <CardContent>
@@ -1017,22 +970,6 @@ export default function ReportsPage() {
               </CardContent>
             </Card>
           </div>
-
-          {/* Potential profit */}
-          <Card className="border-l-4 border-l-green-500 shadow-sm">
-            <CardHeader>
-              <CardTitle className="text-base">Potential Profit</CardTitle>
-              <CardDescription>If all inventory is sold at retail price</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-green-600">
-                {formatCurrency(inventoryReport.potential_profit)}
-              </div>
-              <p className="text-xs text-muted-foreground mt-2">
-                Margin: {parseFloat(inventoryReport.total_retail_value) > 0 ? ((parseFloat(inventoryReport.potential_profit) / parseFloat(inventoryReport.total_retail_value)) * 100).toFixed(1) : 0}%
-              </p>
-            </CardContent>
-          </Card>
 
           {/* Inventory items table - Desktop */}
           {inventoryReport.items && inventoryReport.items.length > 0 && (
@@ -1049,7 +986,6 @@ export default function ReportsPage() {
                         <th className="pb-3 font-medium">Product</th>
                         <th className="pb-3 font-medium">Category</th>
                         <th className="pb-3 font-medium text-right">Qty</th>
-                        <th className="pb-3 font-medium text-right">Cost</th>
                         <th className="pb-3 font-medium text-right">Price</th>
                         <th className="pb-3 font-medium text-right">Value</th>
                       </tr>
@@ -1067,7 +1003,6 @@ export default function ReportsPage() {
                           </td>
                           <td className="py-3 text-muted-foreground">{item.category_name || '-'}</td>
                           <td className="py-3 text-right">{formatNumber(item.quantity)}</td>
-                          <td className="py-3 text-right">{formatCurrency(item.cost_price)}</td>
                           <td className="py-3 text-right">{formatCurrency(item.sell_price)}</td>
                           <td className="py-3 text-right font-bold">{formatCurrency(item.retail_value)}</td>
                         </tr>
@@ -1104,11 +1039,7 @@ export default function ReportsPage() {
                         <span className="text-xs text-muted-foreground block">Retail Value</span>
                         <span className="font-bold">{formatCurrency(item.retail_value)}</span>
                       </div>
-                      <div>
-                        <span className="text-xs text-muted-foreground block">Cost</span>
-                        <span className="font-medium">{formatCurrency(item.cost_price)}</span>
-                      </div>
-                      <div className="text-right">
+                      <div className="col-span-2 text-right">
                         <span className="text-xs text-muted-foreground block">Price</span>
                         <span className="font-medium">{formatCurrency(item.sell_price)}</span>
                       </div>
