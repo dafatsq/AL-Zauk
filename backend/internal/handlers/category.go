@@ -7,9 +7,9 @@ import (
 	"github.com/google/uuid"
 	"github.com/rs/zerolog/log"
 
-	"dashpoint/backend/internal/audit"
-	"dashpoint/backend/internal/models"
-	"dashpoint/backend/internal/repository"
+	"AL-Zauk/backend/internal/audit"
+	"AL-Zauk/backend/internal/models"
+	"AL-Zauk/backend/internal/repository"
 )
 
 // CategoryHandler handles category endpoints

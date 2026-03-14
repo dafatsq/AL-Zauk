@@ -10,7 +10,7 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/shopspring/decimal"
 
-	"dashpoint/backend/internal/models"
+	"AL-Zauk/backend/internal/models"
 )
 
 // ShiftRepository handles shift database operations

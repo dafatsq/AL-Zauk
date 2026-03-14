@@ -13,20 +13,20 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 
-	"dashpoint/backend/internal/audit"
-	"dashpoint/backend/internal/auth"
-	"dashpoint/backend/internal/config"
-	"dashpoint/backend/internal/database"
-	"dashpoint/backend/internal/handlers"
-	"dashpoint/backend/internal/middleware"
-	"dashpoint/backend/internal/repository"
+	"AL-Zauk/backend/internal/audit"
+	"AL-Zauk/backend/internal/auth"
+	"AL-Zauk/backend/internal/config"
+	"AL-Zauk/backend/internal/database"
+	"AL-Zauk/backend/internal/handlers"
+	"AL-Zauk/backend/internal/middleware"
+	"AL-Zauk/backend/internal/repository"
 )
 
 func main() {
 	// Setup logging
 	setupLogging()
 
-	log.Info().Msg("Starting DashPoint POS Backend...")
+	log.Info().Msg("Starting AL-Zauk POS Backend...")
 
 	// Load configuration
 	cfg, err := config.Load()
@@ -112,7 +112,7 @@ func main() {
 
 	// Create Fiber app
 	app := fiber.New(fiber.Config{
-		AppName:      "DashPoint POS API",
+		AppName:      "AL-Zauk POS API",
 		ErrorHandler: errorHandler,
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 0, // Disable write timeout for SSE long-polling connections
@@ -203,7 +203,7 @@ func setupRoutes(
 	// Root endpoint
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.JSON(fiber.Map{
-			"name":    "DashPoint POS API",
+			"name":    "AL-Zauk POS API",
 			"version": "1.0.0",
 			"status":  "running",
 		})

@@ -12,7 +12,7 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/valyala/fasthttp"
 
-	"dashpoint/backend/internal/auth"
+	"AL-Zauk/backend/internal/auth"
 )
 
 // UserEventType represents different types of user management events

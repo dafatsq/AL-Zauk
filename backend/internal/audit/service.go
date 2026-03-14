@@ -7,9 +7,9 @@ import (
 	"github.com/google/uuid"
 	"github.com/rs/zerolog/log"
 
-	"dashpoint/backend/internal/middleware"
-	"dashpoint/backend/internal/models"
-	"dashpoint/backend/internal/repository"
+	"AL-Zauk/backend/internal/middleware"
+	"AL-Zauk/backend/internal/models"
+	"AL-Zauk/backend/internal/repository"
 )
 
 // Service provides audit logging functionality

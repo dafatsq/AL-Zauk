@@ -6,7 +6,7 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 
-	"dashpoint/backend/internal/database"
+	"AL-Zauk/backend/internal/database"
 )
 
 // HealthHandler handles health check endpoints

@@ -5,7 +5,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/rs/zerolog/log"
 
-	"dashpoint/backend/internal/repository"
+	"AL-Zauk/backend/internal/repository"
 )
 
 // RoleHandler handles role and permission endpoints

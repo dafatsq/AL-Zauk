@@ -7,8 +7,8 @@ import (
 	"github.com/google/uuid"
 	"github.com/rs/zerolog/log"
 
-	"dashpoint/backend/internal/auth"
-	"dashpoint/backend/internal/repository"
+	"AL-Zauk/backend/internal/auth"
+	"AL-Zauk/backend/internal/repository"
 )
 
 // AuthMiddleware creates an authentication middleware

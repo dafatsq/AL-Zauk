@@ -8,7 +8,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/rs/zerolog/log"
 
-	"dashpoint/backend/internal/repository"
+	"AL-Zauk/backend/internal/repository"
 )
 
 // AuditHandler handles audit log endpoints

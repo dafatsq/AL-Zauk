@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	dbURL := "postgres://dashpoint:dashpoint_dev@localhost:5432/dashpoint_dev?sslmode=disable"
+	dbURL := "postgres://AL-Zauk:AL-Zauk_dev@localhost:5432/AL-Zauk_dev?sslmode=disable"
 	pool, err := pgxpool.New(context.Background(), dbURL)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to connect: %v\n", err)
@@ -25,7 +25,7 @@ func main() {
 	}
 
 	result, err := pool.Exec(context.Background(),
-		"UPDATE users SET pin_hash = $1, updated_at = NOW() WHERE email = 'cashier@dashpoint.local'",
+		"UPDATE users SET pin_hash = $1, updated_at = NOW() WHERE email = 'cashier@AL-Zauk.local'",
 		string(pinHash))
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Update failed: %v\n", err)

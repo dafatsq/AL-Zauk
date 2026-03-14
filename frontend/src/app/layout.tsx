@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "DashPoint POS",
+  title: "AL-Zauk POS",
   description: "Point of Sale System for Indonesian Stores",
 };
 

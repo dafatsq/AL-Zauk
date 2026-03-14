@@ -1,4 +1,4 @@
-module dashpoint/backend
+module AL-Zauk/backend
 
 go 1.24.0
 

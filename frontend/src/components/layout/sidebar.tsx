@@ -132,7 +132,7 @@ export function Sidebar({ onNavigate }: SidebarProps) {
           {!collapsed && (
             <div className="flex items-center gap-2">
               <Store className="h-6 w-6 text-primary" />
-              <span className="font-bold text-lg">DashPoint</span>
+              <span className="font-bold text-lg">AL-Zauk</span>
             </div>
           )}
           <Button

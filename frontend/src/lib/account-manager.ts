@@ -12,7 +12,7 @@ export interface SavedAccount {
   saved_at: string;
 }
 
-const STORAGE_KEY = 'dashpoint_saved_accounts';
+const STORAGE_KEY = 'AL-Zauk_saved_accounts';
 const MAX_ACCOUNTS = 10;
 
 export class AccountManager {

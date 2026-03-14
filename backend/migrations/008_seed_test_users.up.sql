@@ -2,11 +2,11 @@
 -- Seed owner account for starter pack
 
 -- Owner account
--- Email: owner@dashpoint.local
+-- Email: owner@AL-Zauk.local
 -- Password: owner123
 INSERT INTO users (id, email, name, password_hash, pin_hash, role_id, is_active, created_at, updated_at) VALUES (
     '00000000-0000-0000-0000-000000000001',
-    'owner@dashpoint.local',
+    'owner@AL-Zauk.local',
     'Owner',
     '$2a$12$iTyvGu2YSGZmv0JRLgxfweDEa97hKZj.Ce0q5REiDSxUxLa5HyjkK',
     NULL,

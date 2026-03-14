@@ -1,8 +1,8 @@
-# DashPoint POS
+# AL-Zauk POS
 
-DashPoint is a Point of Sale (POS) application featuring a robust Go backend and a modern Next.js frontend. 
+AL-Zauk is a Point of Sale (POS) application featuring a robust Go backend and a modern Next.js frontend. 
 
-This guide will help you set up and run the DashPoint application locally on your machine.
+This guide will help you set up and run the AL-Zauk application locally on your machine.
 
 ## Prerequisites
 
@@ -21,8 +21,8 @@ Follow these step-by-step instructions to get the application running on your lo
 First, clone the repository to your local machine and navigate into the project directory:
 
 ```bash
-git clone https://github.com/your-username/dashpoint.git
-cd dashpoint
+git clone https://github.com/your-username/AL-Zauk.git
+cd AL-Zauk
 ```
 
 *(Replace `your-username` with the actual GitHub username where the repository is hosted).*
@@ -75,7 +75,7 @@ Open your favorite web browser and navigate to:
 
 **[http://localhost:3000](http://localhost:3000)**
 
-You should now see the DashPoint frontend, successfully communicating with your local backend and database!
+You should now see the AL-Zauk frontend, successfully communicating with your local backend and database!
 
 ---
 

@@ -11,10 +11,10 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/shopspring/decimal"
 
-	"dashpoint/backend/internal/audit"
-	"dashpoint/backend/internal/middleware"
-	"dashpoint/backend/internal/models"
-	"dashpoint/backend/internal/repository"
+	"AL-Zauk/backend/internal/audit"
+	"AL-Zauk/backend/internal/middleware"
+	"AL-Zauk/backend/internal/models"
+	"AL-Zauk/backend/internal/repository"
 )
 
 // ProductHandler handles product endpoints

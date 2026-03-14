@@ -34,7 +34,7 @@ export function Header({ title }: HeaderProps) {
               <div className="h-full flex flex-col">
                 <div className="flex h-16 items-center border-b px-6 flex-none">
                   <Store className="h-6 w-6 text-primary mr-2" />
-                  <span className="font-bold text-lg">DashPoint</span>
+                  <span className="font-bold text-lg">AL-Zauk</span>
                 </div>
                 <div className="flex-1 overflow-hidden">
                   <Sidebar onNavigate={() => setOpen(false)} />

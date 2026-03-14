@@ -11,7 +11,7 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/shopspring/decimal"
 
-	"dashpoint/backend/internal/repository"
+	"AL-Zauk/backend/internal/repository"
 )
 
 // ReportHandler handles report endpoints

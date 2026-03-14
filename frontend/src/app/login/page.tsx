@@ -109,7 +109,7 @@ function LoginPageContent() {
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary">
             <Store className="h-8 w-8 text-primary-foreground" />
           </div>
-          <CardTitle className="text-2xl font-bold">DashPoint POS</CardTitle>
+          <CardTitle className="text-2xl font-bold">AL-Zauk POS</CardTitle>
           <CardDescription>
             Sign in to access your point of sale system
           </CardDescription>
@@ -206,7 +206,7 @@ function LoginPageContent() {
               <div className="mt-6 text-center text-sm text-muted-foreground">
                 <p>Demo Credentials:</p>
                 <p className="mt-1 font-mono text-xs">
-                  owner@dashpoint.local / owner123
+                  owner@AL-Zauk.local / owner123
                 </p>
               </div>
             </TabsContent>

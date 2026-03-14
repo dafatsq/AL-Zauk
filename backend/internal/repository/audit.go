@@ -9,7 +9,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	"dashpoint/backend/internal/models"
+	"AL-Zauk/backend/internal/models"
 )
 
 // AuditRepository handles audit log database operations
