@@ -40,6 +40,7 @@ import {
   ArrowUpCircle,
 } from "lucide-react";
 import api from "@/lib/api";
+import { getBackendBaseUrl } from "@/lib/runtime-config";
 import {
   Product,
   CartItem,
@@ -68,8 +69,7 @@ function getImageUrl(path: string | null | undefined): string {
   }
   // Derive the backend base URL from the API URL env var
   // e.g. "http://localhost:8082/api/v1" -> "http://localhost:8082"
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8082/api/v1";
-  const baseUrl = apiUrl.replace(/\/api\/v1\/?$/, "");
+  const baseUrl = getBackendBaseUrl();
   return `${baseUrl}${path}`;
 }
 

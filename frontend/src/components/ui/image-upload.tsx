@@ -14,6 +14,7 @@ import {
 import Cropper from 'react-easy-crop';
 import type { Area } from 'react-easy-crop';
 import { getSessionItem } from '@/lib/session';
+import { getApiBaseUrl, getBackendBaseUrl } from '@/lib/runtime-config';
 
 interface ImageUploadProps {
   value?: string;
@@ -41,8 +42,7 @@ export function ImageUpload({ value, onChange, onRemove }: ImageUploadProps) {
     }
     // Derive the backend base URL from the API URL env var
     // e.g. "http://localhost:8082/api/v1" -> "http://localhost:8082"
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8082/api/v1';
-    const baseUrl = apiUrl.replace(/\/api\/v1\/?$/, '');
+    const baseUrl = getBackendBaseUrl();
     return `${baseUrl}${path}`;
   };
 
@@ -135,7 +135,7 @@ export function ImageUpload({ value, onChange, onRemove }: ImageUploadProps) {
       const formData = new FormData();
       formData.append('image', blob, 'cropped-image.jpg');
 
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8082/api/v1';
+      const apiUrl = getApiBaseUrl();
       const response = await fetch(`${apiUrl}/upload/image`, {
         method: 'POST',
         headers: {

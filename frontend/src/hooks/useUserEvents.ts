@@ -2,8 +2,9 @@
 
 import { useEffect, useRef, useCallback, useState } from 'react';
 import { getSessionItem, setSessionItem } from '@/lib/session';
+import { getApiBaseUrl } from '@/lib/runtime-config';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8082/api/v1';
+const API_BASE_URL = getApiBaseUrl();
 
 // Helper function to refresh the access token
 async function tryRefreshToken(): Promise<string | null> {

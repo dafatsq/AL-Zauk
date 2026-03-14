@@ -1,4 +1,6 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8082/api/v1';
+import { getApiBaseUrl } from './runtime-config';
+
+const API_BASE_URL = getApiBaseUrl();
 
 import { Permission, PermissionOverride } from '@/types';
 import { getSessionItem, setSessionItem, removeSessionItem } from './session';
