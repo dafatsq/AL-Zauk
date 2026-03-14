@@ -309,26 +309,24 @@ export default function ReportsPage() {
 
       const rows: string[] = [];
 
-      rows.push('Section,Metric,Value');
+      rows.push('Metric,Value');
       rows.push([
-        'Overview',
         'Period',
         `${dateRange.start} to ${dateRange.end}`,
       ].map(escapeCsv).join(','));
-      rows.push(['Overview', 'Total Revenue', totalAmount.toFixed(2)].map(escapeCsv).join(','));
-      rows.push(['Overview', 'Tax Collected', totalTax.toFixed(2)].map(escapeCsv).join(','));
-      rows.push(['Overview', 'Net Revenue', netRevenue.toFixed(2)].map(escapeCsv).join(','));
-      rows.push(['Overview', 'Total Expenses', totalExpenses.toFixed(2)].map(escapeCsv).join(','));
-      rows.push(['Overview', 'Net Profit', netProfit.toFixed(2)].map(escapeCsv).join(','));
-      rows.push(['Overview', 'Total Transactions', salesRangeReport.summary.total_transactions].map(escapeCsv).join(','));
-      rows.push(['Overview', 'Total Items', salesRangeReport.summary.total_items].map(escapeCsv).join(','));
+      rows.push(['Total Revenue', totalAmount.toFixed(2)].map(escapeCsv).join(','));
+      rows.push(['Tax Collected', totalTax.toFixed(2)].map(escapeCsv).join(','));
+      rows.push(['Net Revenue', netRevenue.toFixed(2)].map(escapeCsv).join(','));
+      rows.push(['Total Expenses', totalExpenses.toFixed(2)].map(escapeCsv).join(','));
+      rows.push(['Net Profit', netProfit.toFixed(2)].map(escapeCsv).join(','));
+      rows.push(['Total Transactions', salesRangeReport.summary.total_transactions].map(escapeCsv).join(','));
+      rows.push(['Total Items', salesRangeReport.summary.total_items].map(escapeCsv).join(','));
 
       if (salesRangeReport.daily_reports && salesRangeReport.daily_reports.length > 0) {
         rows.push('');
-        rows.push('Daily Reports,Date,Revenue,Tax,Transactions,Items');
+        rows.push('Date,Revenue,Tax,Transactions,Items');
         salesRangeReport.daily_reports.forEach((day) => {
           rows.push([
-            'Daily Reports',
             day.date,
             parseFloat(day.total_amount || '0').toFixed(2),
             parseFloat(day.total_tax || '0').toFixed(2),
@@ -340,14 +338,13 @@ export default function ReportsPage() {
 
       if (topSellers.length > 0) {
         rows.push('');
-        rows.push('Top Sellers,Product,Quantity Sold,Revenue,Profit Margin %,Profit');
+        rows.push('Product,Quantity Sold,Revenue,Profit Margin %,Profit');
         topSellers.forEach((item) => {
           const totalRevenue = parseFloat(item.total_revenue || '0') || 0;
           const totalProfit = parseFloat(item.total_profit || '0') || 0;
           const profitMargin = totalRevenue > 0 ? ((totalProfit / totalRevenue) * 100).toFixed(2) : '0.00';
 
           rows.push([
-            'Top Sellers',
             item.product_name,
             item.quantity_sold,
             totalRevenue.toFixed(2),
